@@ -49,7 +49,7 @@ module.exports = function(config) {
 
   middleware.hears = function(patterns, message) {
     const regexPatterns = util.makeArrayOfRegex(patterns);
-
+    debug('Hearing message : ', message);
     for (const pattern of regexPatterns) {
       if (pattern.test(message.intent) && message.confidence >= config.minimumConfidence) {
         debug('dialogflow intent matched hear pattern', message.intent, pattern);
