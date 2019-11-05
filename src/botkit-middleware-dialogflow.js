@@ -54,6 +54,8 @@ module.exports = function(config) {
       if (pattern.test(message.intent) && message.confidence >= config.minimumConfidence) {
         debug('dialogflow intent matched hear pattern', message.intent, pattern);
         return true;
+      }else{
+        debug('intent not matched',message.confidence, message.intent)
       }
     }
     return false;
