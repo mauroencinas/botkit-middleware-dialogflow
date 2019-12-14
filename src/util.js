@@ -39,27 +39,32 @@ exports.makeArrayOfRegex = function(data) {
  */
 exports.generateSessionId = function(config, message) {
   let props;
+  if (!'sessionId' in message){
+    if (typeof config.sessionIdProps === 'string') {
+      props = [config.sessionIdProps];
+    } else {
+      props = config.sessionIdProps;
+    }
+    
+    const hashElements = props
+      .map(x => {
+        if (message[x]) return message[x].trim();
+      })
+      .filter(x => typeof x === 'string');
 
-  if (typeof config.sessionIdProps === 'string') {
-    props = [config.sessionIdProps];
-  } else {
-    props = config.sessionIdProps;
-  }
-
-  const hashElements = props
-    .map(x => {
-      if (message[x]) return message[x].trim();
-    })
-    .filter(x => typeof x === 'string');
-
-  debug(
-    'generateSessionId using props %j. Values on this message are %j',
-    props,
-    hashElements
-  );
-  if (hashElements.length > 0) {
-    return hasha(hashElements.join(''), { algorithm: 'md5' });
-  } else {
-    return uuidv1();
+    debug(
+      'generateSessionId using props %j. Values on this message are %j',
+      props,
+      hashElements
+    );
+    if (hashElements.length > 0) {
+      return hasha(hashElements.join(''), { algorithm: 'md5' });
+    } else {
+      return uuidv1();
+    }
+  } else{
+    debug('sessionId present in the message body'),
+    return message['sessionId'];
+    
   }
 };
