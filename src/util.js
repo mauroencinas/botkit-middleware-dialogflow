@@ -39,7 +39,7 @@ exports.makeArrayOfRegex = function(data) {
  */
 exports.generateSessionId = function(config, message) {
   let props;
-  if (!'sessId' in message){
+  if (typeof message['sessId'] === 'undefined'){
     if (typeof config.sessionIdProps === 'string') {
       props = [config.sessionIdProps];
     } else {
